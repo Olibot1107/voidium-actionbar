@@ -32,6 +32,7 @@ CLASSPATH="$(IFS=:; echo "${LIB_JARS[*]}")"
 echo "Compiling..."
 javac \
   --release 21 \
+  -proc:none \
   -Xlint:all,-classfile \
   -Werror \
   -classpath "${CLASSPATH}" \
