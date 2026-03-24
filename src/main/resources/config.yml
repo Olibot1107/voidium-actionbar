@@ -1,0 +1,4 @@
+message: "Running on Voidium Hosting"
+# How often to resend the action bar (ticks). 20 ticks = 1 second.
+interval-ticks: 20
+

@@ -1,0 +1,58 @@
+name: Build plugin and commit artifact
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-and-commit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-and-commit:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Download Paper API (compile-time)
+        run: |
+          mkdir -p ../server/libraries
+          mvn -q -f .github/ci/pom.xml -DoutputDirectory=../server/libraries dependency:copy-dependencies
+
+      - name: Build
+        run: bash ./build.sh
+
+      - name: Stage artifact
+        run: |
+          mkdir -p built
+          cp -f build/VoidiumActionBar.jar built/VoidiumActionBar.jar
+
+      - name: Commit and push (if changed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add built/VoidiumActionBar.jar
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Build plugin [skip ci]"
+          git push

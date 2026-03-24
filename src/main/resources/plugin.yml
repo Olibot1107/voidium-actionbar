@@ -1,0 +1,4 @@
+name: VoidiumActionBar
+version: 1.0.0
+main: com.mcopt.voidiumactionbar.VoidiumActionBarPlugin
+author: mcopt
