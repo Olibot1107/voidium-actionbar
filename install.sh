@@ -2,7 +2,12 @@
 set -euo pipefail
 
 PLUGIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT_DIR="$(cd "${PLUGIN_DIR}/.." && pwd)"
+PARENT_DIR="$(cd "${PLUGIN_DIR}/.." && pwd)"
+if [[ -d "${PARENT_DIR}/server" ]]; then
+  ROOT_DIR="${PARENT_DIR}"
+else
+  ROOT_DIR="${PLUGIN_DIR}"
+fi
 
 "${PLUGIN_DIR}/build.sh"
 

@@ -31,8 +31,8 @@ jobs:
 
       - name: Download Paper API (compile-time)
         run: |
-          mkdir -p ../server/libraries
-          mvn -q -f .github/ci/pom.xml -DoutputDirectory=../server/libraries dependency:copy-dependencies
+          mkdir -p server/libraries
+          mvn -q -f .github/ci/pom.xml -DoutputDirectory=server/libraries dependency:copy-dependencies
 
       - name: Build
         run: bash ./build.sh
