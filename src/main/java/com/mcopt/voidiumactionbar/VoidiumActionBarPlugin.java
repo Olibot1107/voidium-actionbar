@@ -8,11 +8,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 public final class VoidiumActionBarPlugin extends JavaPlugin implements Listener {
+  private static final String MESSAGE = "Running on Voidium Hosting";
+  private static final int INTERVAL_TICKS = 20;
+
   private BukkitTask task;
 
   @Override
   public void onEnable() {
-    saveDefaultConfig();
     Bukkit.getPluginManager().registerEvents(this, this);
     startLoop();
   }
@@ -27,7 +29,7 @@ public final class VoidiumActionBarPlugin extends JavaPlugin implements Listener
 
   @EventHandler
   public void onJoin(PlayerJoinEvent event) {
-    ActionBar.send(event.getPlayer(), getConfig().getString("message", "Running on Voidium Hosting"));
+    ActionBar.send(event.getPlayer(), MESSAGE);
   }
 
   private void startLoop() {
@@ -35,16 +37,12 @@ public final class VoidiumActionBarPlugin extends JavaPlugin implements Listener
       task.cancel();
     }
 
-    final String message = getConfig().getString("message", "Running on Voidium Hosting");
-    final int intervalTicks = Math.max(1, getConfig().getInt("interval-ticks", 20));
-
     task =
         Bukkit.getScheduler()
             .runTaskTimer(
                 this,
-                () -> Bukkit.getOnlinePlayers().forEach(p -> ActionBar.send(p, message)),
-                intervalTicks,
-                intervalTicks);
+                () -> Bukkit.getOnlinePlayers().forEach(p -> ActionBar.send(p, MESSAGE)),
+                INTERVAL_TICKS,
+                INTERVAL_TICKS);
   }
 }
-

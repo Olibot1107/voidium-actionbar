@@ -20,7 +20,4 @@ cd /Users/olie/Desktop/mcopt
 
 ## Config
 
-After first run:
-
-- `/Users/olie/Desktop/mcopt/server/plugins/VoidiumActionBar/config.yml`
-
+No config file (message is currently hardcoded).
